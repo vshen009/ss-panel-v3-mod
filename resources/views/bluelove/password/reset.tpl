@@ -10,9 +10,7 @@
 							<div class="card-main">
 								<div class="card-header">
 									<div class="card-inner">
-									<br></br>
-									<br></br>
-										<h1 class="card-heading"><p class="text-center">重置密码</p></h1>
+										<h1 class="card-heading">重置密码</h1>
 									</div>
 								</div>
 								<div class="card-inner">

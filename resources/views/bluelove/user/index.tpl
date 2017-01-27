@@ -39,7 +39,7 @@
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
-										<p class="card-heading">帐号使用情况</p>
+										<p class="card-heading">用户信息</p>
 										<dl class="dl-horizontal">
 											<dt>帐号等级</dt>
 											<dd>{$user->class}</dd>
@@ -56,6 +56,11 @@
 											{else}
 											<dd>不限速</dd>
 											{/if}
+											<p class="card-heading">快捷功能</p>
+											
+											<p> <a href="user/code"> 立即充值 </a></p>
+											<p> <a href="user/relay"> 修改中转 </a></p>
+											<p> <a href="user/shop"> 购买套餐 </a></p>
 										</dl>
 									</div>
 									
@@ -86,6 +91,16 @@
 										
 										<p><i class="icon icon-lg">android</i>&nbsp;<a href="/ssr-download/ssr-android.apk">Android下载 Android 版</a>，安装，然后在手机上默认浏览器中点击
 										然后点击确定，批量添加完节点，然后路由选择绕过大陆，右上角开启就可以上网了。</p>
+										
+										
+								=====================以下是单端口配置测试======================
+										<p><i class="icon icon-lg">desktop_windows</i>&nbsp;<a href="/ssr-download/ssr-win.7z">Windows 下载 C# 版</a>，解压，运行程序，然后您有两种方式导入所有节点<br>(1)下载<a href="/user/getpcconf?without_mu=0">这个</a>或者<a  href="/user/getpcconf?without_mu=1">这个（无单端口多用户）</a>，右键小飞机 服务器 -- 从配置文件导入服务器，选择这个文件，<br>(2)点击<a class="copy-text" data-clipboard-text="{$android_add}">这里</a>或者<a class="copy-text" data-clipboard-text="{$android_add_without_mu}">这个（无单端口多用户）</a>，然后右键小飞机 -- 从剪贴板复制地址<br>然后选择一个合适的服务器，更新一下PAC为绕过国内IP，然后开启系统代理即可上网。</p>
+										<p><i class="icon icon-lg">laptop_mac</i>&nbsp;<a href="/ssr-download/ssr-mac.dmg">Mac OS X下载这个</a>，安装，然后下载<a href="/user/getpcconf?without_mu=0">这个</a>或者<a  href="/user/getpcconf?without_mu=1">这个（无单端口多用户）</a>，运行程序，小飞机上右键 服务器列表 子菜单 的 “导入服务器配置文件...” 导入这个文件，然后选择一个合适的服务器，更新一下PAC，然后开启系统代理即可上网。</p>
+										<p><i class="icon icon-lg">laptop_mac</i>&nbsp;iOS 强烈推荐下载<a href="https://itunes.apple.com/cn/app/shadowrocket/id932747118?mt=8">Shadowrocket</a>，然后在 Safari 中点击<a id="android_add" href="{$android_add}">这个</a>或者<a id="android_add_without_mu" href="{$android_add_without_mu}">这个（无单端口多用户）</a>，然后点击确定，就可以批量添加节点。</p>
+										<p><i class="icon icon-lg">laptop_mac</i>&nbsp;iOS 下载<a href="/link/{$ios_token}">这个</a>，导入到 Surge 中，然后就可以随意切换服务器上网了。</p>
+										<p><i class="icon icon-lg">android</i>&nbsp;<a href="/ssr-download/ssr-android.apk">Android下载 Android 版</a>，安装，然后在手机上默认浏览器中点击<a id="android_add" href="{$android_add}">这个</a>或者<a id="android_add_without_mu" href="{$android_add_without_mu}">这个（无单端口多用户）</a>，然后点击确定，批量添加完节点，然后路由选择绕过大陆，右上角开启就可以上网了。同时提供一个 ACL 地址，<a href="/link/{$acl_token}">长按复制地址</a>到客户端里应用即可。</p>
+									</div>
+										
 									</div>
 									
 								</div>
@@ -160,14 +175,14 @@
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
-										<p class="card-heading">续命获取流量</p>
-											<p>流量不会重置，可以通过续命获取流量。</p>
+										<p class="card-heading">签到获取流量</p>
+											<p>流量不会重置，可以通过签到获取流量。</p>
 
-											<p>每次续命可以获取{$config['checkinMin']}~{$config['checkinMax']}MB流量。</p>
+											<p>每次签到可以获取{$config['checkinMin']}~{$config['checkinMax']}MB流量。</p>
 										
-											<p>每天可以续命一次。您可以点击按钮或者摇动手机来续命。</p>
+											<p>每天可以签到一次。您可以点击按钮或者摇动手机来签到。</p>
 
-											<p>上次续命时间：<code>{$user->lastCheckInTime()}</code></p>
+											<p>上次签到时间：<code>{$user->lastCheckInTime()}</code></p>
 											
 											<p id="checkin-msg"></p>
 											
@@ -180,10 +195,10 @@
 										<div class="card-action-btn pull-left">
 											{if $user->isAbleToCheckin() }
 												<p id="checkin-btn">
-													<button id="checkin" class="btn btn-brand btn-flat waves-attach"><span class="icon">check</span>&nbsp;续命</button>
+													<button id="checkin" class="btn btn-brand btn-flat waves-attach"><span class="icon">check</span>&nbsp;签到</button>
 												</p>
 											{else}
-												<p><a class="btn btn-brand disabled btn-flat waves-attach" href="#"><span class="icon">check</span>&nbsp;不能续命</a></p>
+												<p><a class="btn btn-brand disabled btn-flat waves-attach" href="#"><span class="icon">check</span>&nbsp;已经签到过</a></p>
 											{/if}
 										</div>
 									</div>

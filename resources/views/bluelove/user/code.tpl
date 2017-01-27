@@ -54,9 +54,9 @@
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
-									请扫码，给我转账来充值，重要：记得备注上 <code>{$user->id}</code>。 否则不会成功！ （正常20秒即可到账）<br>
-									手机登陆的用户，请先截屏，然后用支付宝扫描图片的二维码功能<br>
-									<img src="{$alipay}" width="344" height="344" />
+									请扫码，给我转账来充值，重要：记得备注上输入数字  <code><font size="18">{$user->id}</font></code>。 否则不会成功！ （正常20秒即可到账）<br>
+									手机登陆的用户，请先截屏，然后用支付宝扫描图片-二维码功能<br>
+									<div align="center"><img src="{$alipay}" width="300" /></div>
 								</div>
 							</div>
 						</div>
