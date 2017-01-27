@@ -57,7 +57,11 @@ class UserController extends BaseController
 			}
 		)->where("type","1")->where("node_class","<=",$this->user->class)->get();
 		$android_add="";
+<<<<<<< HEAD
 		$ss_add="";
+=======
+		$android_add_without_mu = "";
+>>>>>>> refs/remotes/esdeathlove/master
 		
 		$user = $this->user;
 		
@@ -97,6 +101,7 @@ class UserController extends BaseController
 						$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
 						$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
 						$android_add .= $ssqr_s_new." ";
+<<<<<<< HEAD
 						
 						$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
 						$ssqr = "wingy-ss://" .base64_encode($ssurl);
@@ -108,6 +113,16 @@ class UserController extends BaseController
 						$ssqr_s_new = "ss://" . Tools::base64_url_encode($ssurl);
 						$android_add .= $ssqr_s_new." ";
 						$ss_add .= "2"." ";
+=======
+						$android_add_without_mu .= $ssqr_s_new." ";
+					}
+					else
+					{
+						$ssurl = ($node->custom_method==1?$user->method:$node->method) . ":" . $user->passwd . "@" . $node->server . ":" . $user->port;
+						$ssqr = "ss://" . base64_encode($ssurl);
+						$android_add .= $ssqr." ";
+						$android_add_without_mu .= $ssqr_s_new." ";
+>>>>>>> refs/remotes/esdeathlove/master
 					}
 					
 					foreach($relay_rules as $relay_rule)
@@ -131,6 +146,7 @@ class UserController extends BaseController
 									$ssurl = $relay_node->server. ":" . $user->port . ":".str_replace("_compatible","",$user->protocol).":".($node->custom_method==1?$user->method:$node->method).":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($user->passwd)."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name." - ".$relay_node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
 									$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
 									$android_add .= $ssqr_s_new." ";
+<<<<<<< HEAD
 									$ss_add .= "3"." ";
 								}
 								else
@@ -139,6 +155,16 @@ class UserController extends BaseController
 									$ssqr_s_new = "ss://" . Tools::base64_url_encode($ssurl);
 									$android_add .= $ssqr_s_new." ";
 									$ss_add .= "4"." ";
+=======
+									$android_add_without_mu .= $ssqr_s_new." ";
+								}
+								else
+								{
+									$ssurl = ($node->custom_method==1?$user->method:$node->method) . ":" . $user->passwd . "@" . $relay_node->server . ":" . $user->port;
+									$ssqr = "ss://" . base64_encode($ssurl);
+									$android_add .= $ssqr." ";
+									$android_add_without_mu .= $ssqr_s_new." ";
+>>>>>>> refs/remotes/esdeathlove/master
 								}
 							}
 						}
@@ -159,6 +185,7 @@ class UserController extends BaseController
 									$ssurl = $relay_node->server. ":" . $user->port . ":".str_replace("_compatible","",$user->protocol).":".($node->custom_method==1?$user->method:$node->method).":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($user->passwd)."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name." - ".$relay_node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
 									$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
 									$android_add .= $ssqr_s_new." ";
+<<<<<<< HEAD
 									$ss_add .= "5"." ";
 								}
 								else
@@ -167,6 +194,16 @@ class UserController extends BaseController
 									$ssqr_s_new = "ss://" . Tools::base64_url_encode($ssurl);
 									$android_add .= $ssqr_s_new." ";
 									$ss_add .= "6"." ";
+=======
+									$android_add_without_mu .= $ssqr_s_new." ";
+								}
+								else
+								{
+									$ssurl = ($node->custom_method==1?$user->method:$node->method) . ":" . $user->passwd . "@" . $relay_node->server . ":" . $user->port;
+									$ssqr = "ss://" . base64_encode($ssurl);
+									$android_add .= $ssqr." ";
+									$android_add_without_mu .= $ssqr_s_new." ";
+>>>>>>> refs/remotes/esdeathlove/master
 								}
 							}
 						}
@@ -178,8 +215,12 @@ class UserController extends BaseController
 				$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
 				$ssqr = "ss://" . base64_encode($ssurl);
 				$android_add .= $ssqr." ";
+<<<<<<< HEAD
 				$ss_add .= "7"." ";
 				
+=======
+				$android_add_without_mu .= $ssqr_s_new." ";
+>>>>>>> refs/remotes/esdeathlove/master
 			}
 			
 			
@@ -270,6 +311,7 @@ class UserController extends BaseController
 					$ssurl = $node->server. ":" . $user->port . ":".str_replace("_compatible","",$user->protocol).":".($node->custom_method==1?$user->method:$node->method).":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($user->passwd)."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
 					$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
 					$android_add .= $ssqr_s_new." ";
+<<<<<<< HEAD
 					$ss_add .= "11"." ";
 				}
 				else
@@ -278,6 +320,16 @@ class UserController extends BaseController
 					$ssqr_s_new = "ss://" . Tools::base64_url_encode($ssurl);
 					$android_add .= $ssqr_s_new." ";
 					$ss_add .= "12"." ";
+=======
+					$android_add_without_mu .= $ssqr_s_new." ";
+				}
+				else
+				{
+					$ssurl = ($node->custom_method==1?$user->method:$node->method) . ":" . $user->passwd . "@" . $relay_node->server . ":" . $user->port;
+					$ssqr = "ss://" . base64_encode($ssurl);
+					$android_add .= $ssqr." ";
+					$android_add_without_mu .= $ssqr_s_new." ";
+>>>>>>> refs/remotes/esdeathlove/master
 				}
 			}
 			
@@ -333,7 +385,11 @@ class UserController extends BaseController
 		$Ann = Ann::orderBy('date', 'desc')->first();
 		
 		
+<<<<<<< HEAD
         return $this->view()->assign('ann',$Ann)->assign('geetest_html',$GtSdk)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign("ss_add",$ss_add)->assign('enable_duoshuo',Config::get('enable_duoshuo'))->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
+=======
+        return $this->view()->assign("acl_token",$acl_token)->assign('ann',$Ann)->assign('geetest_html',$GtSdk)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign("android_add_without_mu",$android_add_without_mu)->assign('enable_duoshuo',Config::get('enable_duoshuo'))->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
+>>>>>>> refs/remotes/esdeathlove/master
     }
 	
 	
@@ -918,7 +974,11 @@ class UserController extends BaseController
 					
 					$ssurl = str_replace("_compatible","",$user->obfs).":".str_replace("_compatible","",$user->protocol).":".$ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port']."/".base64_encode($user->obfs_param);
 					$ssqr_s = "ss://" . base64_encode($ssurl);
+<<<<<<< HEAD
 					$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+=======
+					$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&protoparam=".Tools::base64_url_encode($user->protocol_param)."&remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+>>>>>>> refs/remotes/esdeathlove/master
 					$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
 					$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
 					$ssqr = "ss://" . base64_encode($ssurl);				
@@ -1105,7 +1165,11 @@ class UserController extends BaseController
 					
 					$ssurl = str_replace("_compatible","",$user->obfs).":".str_replace("_compatible","",$user->protocol).":".$ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port']."/".base64_encode($user->obfs_param);
 					$ssqr_s = "ss://" . base64_encode($ssurl);
+<<<<<<< HEAD
 					$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+=======
+					$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&protoparam=".Tools::base64_url_encode($user->protocol_param)."&remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+>>>>>>> refs/remotes/esdeathlove/master
 					$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
 					$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
 					$ssqr = "ss://" . base64_encode($ssurl);
@@ -1138,16 +1202,17 @@ class UserController extends BaseController
     }
 	
 	public function GetPcConf($request, $response, $args){
-        
-        $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=gui-config.json');//->getBody()->write($builder->output());
-        $newResponse->getBody()->write(LinkController::GetPcConf(Node::where('sort', 0)->where("type","1")->where(
+		$without_mu = $request->getQueryParams()["without_mu"];
+		
+		$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=gui-config.json');//->getBody()->write($builder->output());
+		$newResponse->getBody()->write(LinkController::GetPcConf(Node::where('sort', 0)->where("type","1")->where(
 			function ($query) {
 				$query->where("node_group","=",$this->user->node_group)
 					->orWhere("node_group","=",0);
 			}
-		)->where("node_class","<=",$this->user->class)->get(),$this->user));
-        return $newResponse;
-    }
+		)->where("node_class","<=",$this->user->class)->get(),$this->user,$without_mu));
+		return $newResponse;
+	}
 	
 	public function GetIosConf($request, $response, $args){
         
@@ -2005,5 +2070,9 @@ class UserController extends BaseController
 		$logs = DetectLog::orderBy('id', 'desc')->where('user_id',$this->user->id)->paginate(15, ['*'], 'page', $pageNum);
 		$logs->setPath('/user/detect/log');
 		return $this->view()->assign('logs',$logs)->display('user/detect_log.tpl');
+	}
+	
+	public function disable($request, $response, $args){
+		return $this->view()->display('user/disable.tpl');
 	}
 }
