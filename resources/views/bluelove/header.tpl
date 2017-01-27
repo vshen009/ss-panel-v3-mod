@@ -64,22 +64,19 @@
  
 	<div class="collapse navbar-collapse navbar-ex1-collapse">
 			<ul class="nav navbar-nav navbar-right">
-			<li><a href="/">主页</a></li>
+		 {if $user->isLogin}
+			<li><a  href="/user/logout">{$user->user_name}:登出</a> </li>
+			{else}
+			<li><a href="/auth/login">登录</a></li>
+			<li><a href="/auth/register">注册</a></li>
+      {/if}
+			<li><a href="/">  |主页</a></li>
 			<li><a href="/features">技术</a></li>
 			<li><a href="/statistic">性能</a></li>
 			<li><a href="/pricing">价格</a></li>
 			<li><a href="/doc">使用教程</a></li>
-			<li><a href="/tos">服务条款</a></li>
-			{if $user->isLogin}
-			<li><a  href="/user/logout">登出</a> </li>
-			{else}
-			<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">用户中心 <b class="caret"></b></a>
-			<ul class="dropdown-menu">
-			<li><a href="/auth/login">登录</a></li>
-			<li><a href="/auth/register">注册</a></li>
-			</ul>
-			</li>
- {/if}
+			<li><a href="/tos">服务条款|</a></li>
+
 </ul>
 </ul>
 </div>

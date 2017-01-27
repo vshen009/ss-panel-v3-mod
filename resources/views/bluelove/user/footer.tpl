@@ -12,6 +12,6 @@
 	<script src="/theme/material/js/base.min.js"></script>
 	<script src="/theme/material/js/project.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
-	
+	<script src="https://qiyukf.com/script/4b01f1aafd60158311c2ff9bd770782c.js" defer async></script>
 </body>
 </html>

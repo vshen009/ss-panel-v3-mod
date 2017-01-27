@@ -6,13 +6,24 @@
 				<div class="flexslider">
 				<ul class="slides">
 				<li>
-				<h1 class="wow zoomIn" style="animation-delay:30ms;">欢迎回来：{$user->user_name}</h1>
+				<h1 class="wow zoomIn" style="animation-delay:30ms;">欢迎回来：{$user->user_name}<br/></h1>
 				
-				<h3 class="wow zoomIn" style="animation-delay:1320ms;">祝你一天好心情！</h3>
+				<h3 class="wow zoomIn" style="animation-delay:1320ms;">祝你一天好心情！<br/></h3>
 				
-				<div class="slider-actions "> <a href="/auth/register" class="btn btn-success btn-lg wow bounceIn" style="animation-delay:2000ms;">用户中心 </a> </div>
+				<div class="slider-actions "><a href="/user" class="btn btn-success btn-lg wow bounceIn" style="animation-delay:2000ms;">用户中心 <br/> </a> </div>
 				</li>
 				</div>
+				
+	      <div class="slide2">
+				<h1 class="wow zoomIn" style="animation-delay:20ms;">快捷菜单</h1>
+				<div class="slider-actions text-center">
+				<a href="/user/code" class="btn btn-success btn-lg wow bounceIn" style="animation-delay:800ms;">立即充值 </a> 
+				<a href="user/relay" class="btn btn-primary btn-lg wow bounceIn" style="animation-delay:800ms;">修改中转 </a></div>
+        <a href="user/shop" class="btn btn-primary btn-lg wow bounceIn" style="animation-delay:800ms;">购买套餐 </a></div>
+				</div>
+				</li>
+				
+				
 		{else}
 				
 				<div class="flexslider">

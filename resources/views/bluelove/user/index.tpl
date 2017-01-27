@@ -21,9 +21,19 @@
 		<div class="container">
 			<section class="content-inner margin-top-no">
 				<div class="ui-card-wrap">
-						
 						<div class="col-lg-6 col-md-6">
-						
+								<div class="card">
+								<div class="card-main">
+									<div class="card-inner margin-bottom-no">
+						  				<p class="card-heading">快捷功能</p>
+											<p> <a href="user/code"> 立即充值 </a></p>
+											<p> <a href="user/relay"> 修改中转 </a></p>
+											<p> <a href="user/shop"> 购买套餐 </a></p>
+										</dl>
+									</div>
+									
+								</div>
+							</div>
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
@@ -55,13 +65,7 @@
 											<dd>{$user->node_speedlimit}Mbps</dd>
 											{else}
 											<dd>不限速</dd>
-											{/if}
-											<p class="card-heading">快捷功能</p>
-											
-											<p> <a href="user/code"> 立即充值 </a></p>
-											<p> <a href="user/relay"> 修改中转 </a></p>
-											<p> <a href="user/shop"> 购买套餐 </a></p>
-										</dl>
+										{/if}
 									</div>
 									
 								</div>
