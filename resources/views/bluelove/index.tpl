@@ -23,7 +23,9 @@
 				</div>
 				</li>
 				
-				
+		</div>
+				</div>
+				</div>
 		{else}
 				
 				<div class="flexslider">

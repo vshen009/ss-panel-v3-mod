@@ -70,12 +70,12 @@
 			<li><a href="/auth/login">登录</a></li>
 			<li><a href="/auth/register">注册</a></li>
       {/if}
-			<li><a href="/">  |主页</a></li>
+			<li><a href="/">  | 主页</a></li>
 			<li><a href="/features">技术</a></li>
 			<li><a href="/statistic">性能</a></li>
 			<li><a href="/pricing">价格</a></li>
 			<li><a href="/doc">使用教程</a></li>
-			<li><a href="/tos">服务条款|</a></li>
+			<li><a href="/tos">服务条款 |</a></li>
 
 </ul>
 </ul>
