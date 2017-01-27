@@ -17,13 +17,13 @@
 	      <div class="slide2">
 				<h1 class="wow zoomIn" style="animation-delay:20ms;">快捷菜单</h1>
 				<div class="slider-actions text-center">
-				<a href="/user/code" class="btn btn-success btn-lg wow bounceIn" style="animation-delay:800ms;">立即充值 </a> 
+				<a href="/user/code" class="btn btn-primary btn-lg wow bounceIn" style="animation-delay:800ms;">立即充值 </a> 
 				<a href="user/relay" class="btn btn-primary btn-lg wow bounceIn" style="animation-delay:800ms;">修改中转 </a></div>
         <a href="user/shop" class="btn btn-primary btn-lg wow bounceIn" style="animation-delay:800ms;">购买套餐 </a></div>
 				</div>
 				</li>
-				
-		</div>
+				</ul>
+				</div>
 				</div>
 				</div>
 		{else}
