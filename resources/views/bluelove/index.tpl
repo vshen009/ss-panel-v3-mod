@@ -9,8 +9,8 @@
 				<h1 class="wow zoomIn" style="animation-delay:30ms;">欢迎回来：{$user->user_name}<br/></h1>
 				
 				<h3 class="wow zoomIn" style="animation-delay:1320ms;">祝你一天好心情！<br/></h3>
-				
-				<div class="slider-actions "><a href="/user" class="btn btn-success btn-lg wow bounceIn" style="animation-delay:2000ms;">用户中心 <br/> </a> </div>
+				<br>
+				<div class="slider-actions text-center"><a href="/user" class="btn btn-success btn-lg wow bounceIn" style="animation-delay:2000ms;">用户中心 <br/> </a> </div>
 				</li>
 				</div>
 				
@@ -56,7 +56,7 @@
 				</div>
 				</div>
 				</div>
- 
+ {/if}
 				<div class="container">
 				 
 				<div class="row mainFeatures" id="features">
@@ -138,7 +138,7 @@
 				  </div>
 				 
 				 
-{/if}
+
 
 
 
