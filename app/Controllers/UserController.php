@@ -12,6 +12,7 @@ use voku\helper\AntiXSS;
 use App\Models\User;
 use App\Models\Code;
 use App\Models\Ip;
+use App\Models\Paylist;
 use App\Models\LoginIp;
 use App\Models\BlockIp;
 use App\Models\UnblockIp;
@@ -21,6 +22,8 @@ use App\Utils\QQWry;
 use App\Utils\GA;
 use App\Utils\Geetest;
 use App\Utils\Telegram;
+use App\Utils\TelegramSessionManager;
+use App\Utils\Pay;
 use App\Services\Mail;
 
 
@@ -50,7 +53,12 @@ class UserController extends BaseController
 		$Speedtest['Uspeed']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("unicomupload","desc")->take(3);
 		$Speedtest['Cspeed']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("cmccupload","desc")->take(3);*/
 		
-		$nodes=Node::where('sort', 0)->where(
+		$nodes=Node::where(
+			function ($query) {
+				$query->where('sort', 0)
+					->orwhere('sort', 10);
+			}
+		)->where(
 			function ($query) {
 				$query->where("node_group","=",$this->user->node_group)
 					->orWhere("node_group","=",0);
@@ -69,14 +77,7 @@ class UserController extends BaseController
 			}
 		)->get();
 		
-		$relay_nodes = Node::where(
-			function ($query) use ($user){
-				$query->Where("node_group","=",$user->node_group)
-					->orWhere("node_group","=",0);
-			}
-		)->where('type', 1)->where('sort', 10)->where("node_class","<=",$user->class)->orderBy('name')->get();
-		
-		$relay_rules = Relay::where('user_id', $this->user->id)->orderBy('id', 'asc')->get();
+		$relay_rules = Relay::where('user_id', $this->user->id)->orwhere('user_id', 0)->orderBy('id', 'asc')->get();
 		
 		foreach($nodes as $node)
 		{
@@ -94,7 +95,20 @@ class UserController extends BaseController
 				{
 					if($node->custom_rss == 1)
 					{
-						$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+						
+						$node_name = $node->name;
+						
+						if($node->sort == 10)
+						{
+							$relay_rule = Tools::pick_out_relay_rule($node->id, $user->port, $relay_rules);
+							
+							if($relay_rule != null)
+							{
+								$node_name .= " - ".$relay_rule->dist_node()->name;
+							}
+						}
+						
+						$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node_name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
 						$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
 						$android_add .= $ssqr_s_new." ";
             $ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
@@ -109,6 +123,7 @@ class UserController extends BaseController
 						$android_add .= $ssqr." ";
 						$android_add_without_mu .= $ssqr_s_new." ";
 					}
+<<<<<<< HEAD
 					
 					foreach($relay_rules as $relay_rule)
 					{
@@ -172,6 +187,8 @@ class UserController extends BaseController
 							}
 						}
 					}
+=======
+>>>>>>> 1690c1b76d3261fcb1b1f77b7d2035f11c35ff18
 				}
 			}
 			else
@@ -190,7 +207,30 @@ class UserController extends BaseController
 				foreach($mu_nodes as $mu_node)
 				{
 					$mu_user = User::where('port','=',$mu_node->server)->first();
+<<<<<<< HEAD
 					$mu_user->obfs_param = $user->getMuMd5();
+=======
+
+					if($mu_user->is_multi_user == 1)
+					{
+						$mu_user->obfs_param = $user->getMuMd5();
+					}
+					
+					$mu_user->protocol_param = $user->id.":".$user->passwd;
+					
+					$node_name = $node->name;
+					
+					if($node->sort == 10 && $mu_user->is_multi_user != 2)
+					{
+						$relay_rule = Tools::pick_out_relay_rule($node->id, $mu_user->port, $relay_rules);
+						
+						if($relay_rule != null)
+						{
+							$node_name .= " - ".$relay_rule->dist_node()->name;
+						}
+					}
+					
+>>>>>>> 1690c1b76d3261fcb1b1f77b7d2035f11c35ff18
 					
 					$ary['server_port'] = $mu_user->port;
 					$ary['password'] = $mu_user->passwd;
@@ -199,11 +239,16 @@ class UserController extends BaseController
 						$ary['method'] = $mu_user->method;
 					}
 					
+<<<<<<< HEAD
 					$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$mu_user->protocol).":".$ary['method'].":".str_replace("_compatible","",$mu_user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($mu_user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name." - ".$mu_node->server." 端口单端口多用户") . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+=======
+					$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$mu_user->protocol).":".$ary['method'].":".str_replace("_compatible","",$mu_user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($mu_user->obfs_param)."&protoparam=".Tools::base64_url_encode($mu_user->protocol_param)."&remarks=".Tools::base64_url_encode($node_name." - ".$mu_node->server." 端口单端口多用户") . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+>>>>>>> 1690c1b76d3261fcb1b1f77b7d2035f11c35ff18
 					$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
 					$android_add .= $ssqr_s_new." ";
 					$ss_add .= "8"." ";
 					
+<<<<<<< HEAD
 					foreach($relay_rules as $relay_rule)
 					{
 						if(!($relay_rule->dist_node_id == $node->id && $relay_rule->port == $mu_user->port))
@@ -253,10 +298,13 @@ class UserController extends BaseController
 						}
 					}
 					
+=======
+>>>>>>> 1690c1b76d3261fcb1b1f77b7d2035f11c35ff18
 				}
 			}
 		}
 		
+<<<<<<< HEAD
 		foreach($relay_nodes as $node)
 		{
 			$rules = Relay::where(
@@ -320,9 +368,18 @@ class UserController extends BaseController
 		}
 		
 		
+=======
+>>>>>>> 1690c1b76d3261fcb1b1f77b7d2035f11c35ff18
 		$ios_token = LinkController::GenerateIosCode("smart",0,$this->user->id,0,"smart");
 		$acl_token = LinkController::GenerateAclCode("smart",0,$this->user->id,0,"smart");
 		
+<<<<<<< HEAD
+=======
+		$router_token = LinkController::GenerateRouterCode($this->user->id, 0);
+		$router_token_without_mu = LinkController::GenerateRouterCode($this->user->id, 1);
+		
+		
+>>>>>>> 1690c1b76d3261fcb1b1f77b7d2035f11c35ff18
 		$uid = time().rand(1,10000) ;
 		if(Config::get('enable_geetest_checkin') == 'true')
 		{
@@ -336,7 +393,11 @@ class UserController extends BaseController
 		$Ann = Ann::orderBy('date', 'desc')->first();
 		
 		
+<<<<<<< HEAD
         return $this->view()->assign("acl_token",$acl_token)->assign('ann',$Ann)->assign('geetest_html',$GtSdk)->assign("ios_token",$ios_token)->assign("ss_add",$ss_add)->assign("android_add",$android_add)->assign("android_add_without_mu",$android_add_without_mu)->assign('enable_duoshuo',Config::get('enable_duoshuo'))->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
+=======
+		return $this->view()->assign("router_token", $router_token)->assign("router_token_without_mu", $router_token_without_mu)->assign("acl_token",$acl_token)->assign('ann',$Ann)->assign('geetest_html',$GtSdk)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign("android_add_without_mu",$android_add_without_mu)->assign('enable_duoshuo',Config::get('enable_duoshuo'))->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
+>>>>>>> 1690c1b76d3261fcb1b1f77b7d2035f11c35ff18
     }
 	
 	
@@ -354,6 +415,7 @@ class UserController extends BaseController
 	
 	public function code($request, $response, $args)
     {
+<<<<<<< HEAD
 		if(Config::get('enable_zfbjk') == 'true')
 		{
 			$alipay=Config::get("zfbjk_qrcode");
@@ -410,6 +472,18 @@ class UserController extends BaseController
 		
 		}
 
+=======
+		
+		$pageNum = 1;
+		if (isset($request->getQueryParams()["page"])) {
+			$pageNum = $request->getQueryParams()["page"];
+		}
+		$codes = Code::where('type','<>','-2')->where('userid','=',$this->user->id)->orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
+		$codes->setPath('/user/code');
+		return $this->view()->assign('codes',$codes)->assign('pmw', Pay::getHTML($this->user))->display('user/code.tpl');
+		
+		
+>>>>>>> 1690c1b76d3261fcb1b1f77b7d2035f11c35ff18
 
 		
 	}
@@ -455,6 +529,13 @@ class UserController extends BaseController
             return $response->getBody()->write(json_encode($res));
 		}
 		
+    }
+
+
+	public function alipay($request, $response, $args)
+    {
+		$amount = $request->getQueryParams()["amount"];
+		Pay::getGen($this->user, $amount);
     }
 	
 	
@@ -614,8 +695,17 @@ class UserController extends BaseController
 		
 		$user = $this->user;
 		
-		$user->port=Tools::getAvPort();
+		$origin_port = $user->port;
+		
+		$user->port = Tools::getAvPort();
 		$user->save();
+		
+		$relay_rules = Relay::where('user_id', $user->id)->where('port', $origin_port)->get();
+		foreach($relay_rules as $rule)
+		{
+			$rule->port = $user->port;
+			$rule->save();
+		}
 		
 		
 		$res['ret'] = 1;
@@ -649,20 +739,13 @@ class UserController extends BaseController
     {
         $user = Auth::getUser();
         $nodes = Node::where(
-		function ($query) {
-			$query->Where("node_group","=",$this->user->node_group)
-				->orWhere("node_group","=",0);
-		}
-	)->where('type', 1)->where("node_class","<=",$this->user->class)->orderBy('name')->get();
+			function ($query) {
+				$query->Where("node_group","=",$this->user->node_group)
+					->orWhere("node_group","=",0);
+			}
+		)->where('type', 1)->where("node_class","<=",$this->user->class)->orderBy('name')->get();
 	
-	$relay_nodes = Node::where(
-		function ($query) {
-			$query->Where("node_group","=",$this->user->node_group)
-				->orWhere("node_group","=",0);
-		}
-	)->where('type', 1)->where('sort', 10)->where("node_class","<=",$this->user->class)->orderBy('name')->get();
-
-	$relay_rules = Relay::where('user_id', $this->user->id)->orderBy('id', 'asc')->get();
+	$relay_rules = Relay::where('user_id', $this->user->id)->orwhere('user_id', 0)->orderBy('id', 'asc')->get();
 	
 	$node_prefix=Array();
 	$node_method=Array();
@@ -673,7 +756,6 @@ class UserController extends BaseController
 	$node_heartbeat=Array();
 	$node_bandwidth=Array();
 	$node_muport=Array();
-	$node_relay=Array();
 	
 	$ports_count = Node::where(
 		function ($query) use ($user) {
@@ -695,36 +777,6 @@ class UserController extends BaseController
 				array_push($node_muport,array('server'=>$node,'user'=>$mu_user));
 				continue;
 			}
-			
-			if($node->sort==10)
-			{
-				$rules = Relay::where(
-					function ($query) use ($node){
-						$query->Where("source_node_id","=",$node->id)
-							->orWhere("source_node_id","=",0);
-					}
-				)->where('user_id', $this->user->id)->orderBy('id','asc')->get();
-				
-				$port_conut = 0;
-				$exist_port = array();
-				
-				foreach($rules as $rule)
-				{
-					if(!isset($node_relay[$rule->id]))
-					{
-						$node_relay[$rule->id] = array('node_id' => $rule->dist_node_id, 'rule' => $rule);
-					}
-					
-					$exist_port[$rule->port] = 1;
-				}
-				
-				if(count($exist_port) >= $ports_count)
-				{
-					continue;
-				}
-			}
-			
-			
 			
 			$temp=explode(" - ",$node->name);
 			if(!isset($node_prefix[$temp[0]]))
@@ -813,7 +865,7 @@ class UserController extends BaseController
 	$node_prefix=(object)$node_prefix;
 	$node_order=(object)$node_order;
 	$tools = new Tools();
-        return $this->view()->assign('relay_rules', $relay_rules)->assign('tools', $tools)->assign('relay_nodes', $relay_nodes)->assign('node_method', $node_method)->assign('node_relay', $node_relay)->assign('node_muport', $node_muport)->assign('node_bandwidth',$node_bandwidth)->assign('node_heartbeat',$node_heartbeat)->assign('node_prefix', $node_prefix)->assign('node_prealive', $node_prealive)->assign('node_order', $node_order)->assign('user', $user)->assign('node_alive', $node_alive)->display('user/node.tpl');
+        return $this->view()->assign('relay_rules', $relay_rules)->assign('tools', $tools)->assign('node_method', $node_method)->assign('node_muport', $node_muport)->assign('node_bandwidth',$node_bandwidth)->assign('node_heartbeat',$node_heartbeat)->assign('node_prefix', $node_prefix)->assign('node_prealive', $node_prealive)->assign('node_order', $node_order)->assign('user', $user)->assign('node_alive', $node_alive)->display('user/node.tpl');
     }
 
 
@@ -823,7 +875,6 @@ class UserController extends BaseController
         $id = $args['id'];
         $mu = $request->getQueryParams()["ismu"];
 		$relay_rule_id = $request->getQueryParams()["relay_rule"];
-		$relay_node_id = $request->getQueryParams()["relay_node_id"];
         $node = Node::find($id);
 
         if ($node == null) {
@@ -836,35 +887,6 @@ class UserController extends BaseController
 			case 0: 
 				if($user->class>=$node->node_class&&($user->node_group==$node->node_group||$node->node_group==0)&&($node->node_bandwidth_limit==0||$node->node_bandwidth<$node->node_bandwidth_limit))
 				{
-					if($relay_rule_id != 0)
-					{
-						$relay_rule = Relay::where('id', $relay_rule_id)->where('user_id', $this->user->id)->first();
-						if($relay_rule == NULL)
-						{
-							exit(0);
-						}
-						
-						$relay_server = $relay_rule->Source_Node();
-						
-						if($relay_server == NULL)
-						{
-							$relay_server = Node::where('id',$relay_node_id)->where(
-								function ($query) {
-									$query->Where("node_group","=",$this->user->node_group)
-										->orWhere("node_group","=",0);
-								}
-							)->where('type', 1)->where('sort', 10)->where("node_class","<=",$this->user->class)->first();
-							
-							if($relay_server == NULL)
-							{
-								exit(0);
-							}
-						}
-						
-						$node->server = $relay_server->server;
-						
-						
-					}
 					
 					$ary['server'] = $node->server;
 					$ary['local_address'] = '127.0.0.1';
@@ -1058,6 +1080,18 @@ class UserController extends BaseController
 			case 10: 
 				if($user->class>=$node->node_class&&($user->node_group==$node->node_group||$node->node_group==0)&&($node->node_bandwidth_limit==0||$node->node_bandwidth<$node->node_bandwidth_limit))
 				{
+					$relay_rule = Relay::where('id', $relay_rule_id)->where(
+						function ($query) use ($user) {
+							$query->Where("user_id", "=", $user->id)
+								->orWhere("user_id", "=", 0);
+						}
+					)->first();
+					
+					if($relay_rule != null)
+					{
+						$node->name .= " - ".$relay_rule->dist_node()->name;
+					}
+					
 					$ary['server'] = $node->server;
 					$ary['local_address'] = '127.0.0.1';
 					$ary['local_port'] = 1080;
@@ -1145,7 +1179,12 @@ class UserController extends BaseController
 		$without_mu = $request->getQueryParams()["without_mu"];
 		
 		$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=gui-config.json');//->getBody()->write($builder->output());
-		$newResponse->getBody()->write(LinkController::GetPcConf(Node::where('sort', 0)->where("type","1")->where(
+		$newResponse->getBody()->write(LinkController::GetPcConf(Node::where(
+			function ($query) {
+				$query->where('sort', 0)
+					->orWhere('sort', 10);
+			}
+		)->where("type","1")->where(
 			function ($query) {
 				$query->where("node_group","=",$this->user->node_group)
 					->orWhere("node_group","=",0);
@@ -1245,7 +1284,11 @@ class UserController extends BaseController
 			$isBlock = 1;
 		}
 		
-        return $this->view()->assign('user',$this->user)->assign('themes',$themes)->assign('isBlock',$isBlock)->assign('Block',$Block)->display('user/edit.tpl');
+		$bind_token = TelegramSessionManager::add_bind_session($this->user);
+		
+		$config_service = new Config();
+		
+		return $this->view()->assign('user',$this->user)->assign('themes',$themes)->assign('isBlock',$isBlock)->assign('Block',$Block)->assign('bind_token', $bind_token)->assign('telegram_bot', Config::get('telegram_bot'))->assign('config_service', $config_service)->display('user/edit.tpl');
     }
 
 
@@ -1316,6 +1359,8 @@ class UserController extends BaseController
         $hashPwd = Hash::passwordHash($pwd);
         $user->pass = $hashPwd;
         $user->save();
+        
+        $user->clean_link();
 
         $res['ret'] = 1;
         $res['msg'] = "修改成功";
@@ -1335,34 +1380,25 @@ class UserController extends BaseController
     }
 	
 	public function Unblock($request, $response, $args)
-    {
-        $user = $this->user;
-		$BIP = BlockIp::where("ip",$_SERVER["REMOTE_ADDR"])->first();
-        if ($BIP == NULL) {
-            $res['ret'] = 0;
-            $res['msg'] = "没有被封";
-            return $response->getBody()->write(json_encode($res));
-        }
-		
+	{
+		$user = $this->user;
 		$BIP = BlockIp::where("ip",$_SERVER["REMOTE_ADDR"])->get();
 		foreach($BIP as $bi)
 		{
 			$bi->delete();
-		
-			$UIP = new UnblockIp();
-			$UIP->userid = $user->id;
-			$UIP->ip = $_SERVER["REMOTE_ADDR"];
-			$UIP->datetime = time();
-			$UIP->save();
 		}
 		
-        
-
+		$UIP = new UnblockIp();
+		$UIP->userid = $user->id;
+		$UIP->ip = $_SERVER["REMOTE_ADDR"];
+		$UIP->datetime = time();
+		$UIP->save();
 		
-        $res['ret'] = 1;
-        $res['msg'] = "解封 ".$_SERVER["REMOTE_ADDR"]." 成功";
-        return $this->echoJson($response, $res);
-    }
+		
+		$res['ret'] = 1;
+		$res['msg'] = "发送解封命令解封 ".$_SERVER["REMOTE_ADDR"]." 成功";
+		return $this->echoJson($response, $res);
+	}
 	
 	public function shop($request, $response, $args){
         $pageNum = 1;
@@ -1741,6 +1777,13 @@ class UserController extends BaseController
         
         $user = $this->user;
 		
+		if($user->telegram_id != 0)
+		{
+			$res['ret'] = 0;
+			$res['msg'] = "您绑定了 Telegram ，所以此项并不能被修改。";
+			return $response->getBody()->write(json_encode($res));
+		}
+		
 		if ( $wechat == ""||$type == "") {
             $res['ret'] = 0;
             $res['msg'] = "请填好";
@@ -1766,40 +1809,40 @@ class UserController extends BaseController
 	
 	
 	public function updateRss($request, $response, $args)
-    {
+	{
 		$protocol = $request->getParam('protocol');
 		$obfs = $request->getParam('obfs');
-        
-        $user = $this->user;
+		
+		$user = $this->user;
 		
 		if ( $obfs == ""||$protocol == "") {
-            $res['ret'] = 0;
-            $res['msg'] = "请填好";
-            return $response->getBody()->write(json_encode($res));
-        }
+			$res['ret'] = 0;
+			$res['msg'] = "请填好";
+			return $response->getBody()->write(json_encode($res));
+		}
 		
-		if (!Tools::is_validate($obfs)) {
-            $res['ret'] = 0;
-            $res['msg'] = "悟空别闹";
-            return $response->getBody()->write(json_encode($res));
-        }
+		if (!Tools::is_param_validate('obfs', $obfs)) {
+			$res['ret'] = 0;
+			$res['msg'] = "悟空别闹";
+			return $response->getBody()->write(json_encode($res));
+		}
 		
-		if (!Tools::is_validate($protocol)) {
-            $res['ret'] = 0;
-            $res['msg'] = "悟空别闹";
-            return $response->getBody()->write(json_encode($res));
-        }
+		if (!Tools::is_param_validate('protocol', $protocol)) {
+			$res['ret'] = 0;
+			$res['msg'] = "悟空别闹";
+			return $response->getBody()->write(json_encode($res));
+		}
 		
-        $antiXss = new AntiXSS();
+		$antiXss = new AntiXSS();
 		
 		$user->protocol = $antiXss->xss_clean($protocol);
-        $user->obfs = $antiXss->xss_clean($obfs);
-        $user->save();
+		$user->obfs = $antiXss->xss_clean($obfs);
+		$user->save();
 
-        $res['ret'] = 1;
-        $res['msg'] = "修改成功";
-        return $this->echoJson($response, $res);
-    }
+		$res['ret'] = 1;
+		$res['msg'] = "修改成功";
+		return $this->echoJson($response, $res);
+	}
 	
 	public function updateTheme($request, $response, $args)
     {
@@ -1907,7 +1950,7 @@ class UserController extends BaseController
             return $response->getBody()->write(json_encode($res));
         }
 
-	if (!Tools::is_validate($method)) {
+        if (!Tools::is_param_validate('method', $method)) {
             $res['ret'] = 0;
             $res['msg'] = "悟空别闹";
             return $response->getBody()->write(json_encode($res));
@@ -2014,5 +2057,13 @@ class UserController extends BaseController
 	
 	public function disable($request, $response, $args){
 		return $this->view()->display('user/disable.tpl');
+	}
+	
+	public function telegram_reset($request, $response, $args){
+		$user = $this->user;
+		$user->telegram_id = 0;
+		$user->save();
+		$newResponse = $response->withStatus(302)->withHeader('Location', '/user/edit');
+		return $newResponse;
 	}
 }

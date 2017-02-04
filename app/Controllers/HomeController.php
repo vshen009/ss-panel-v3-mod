@@ -11,6 +11,12 @@ use App\Services\Auth;
 use App\Services\Config;
 use App\Utils\Tools;
 use App\Utils\Telegram;
+use App\Utils\Tuling;
+use App\Utils\TelegramSessionManager;
+use App\Utils\QRcode;
+use App\Utils\Pay;
+use App\Utils\TelegramProcess;
+use App\Utils\Spay_tool;
 
 /**
  *  HomeController
@@ -59,24 +65,24 @@ class HomeController extends BaseController
         return $this->view()->display('staff.tpl');
     }
 	
-	
-	public function telegram()
-    {
-		try {
-			$bot = new \TelegramBot\Api\Client(Config::get('telegram_token'));
-			// or initialize with botan.io tracker api key
-			// $bot = new \TelegramBot\Api\Client('YOUR_BOT_API_TOKEN', 'YOUR_BOTAN_TRACKER_API_KEY');
-
-			$bot->command('ping', function ($message) use ($bot) {
-				$bot->sendMessage($message->getChat()->getId(), 'Pong!这个群组的 ID 是 '.$message->getChat()->getId().'!');
-			});
-
-			$bot->run();
-
-		} catch (\TelegramBot\Api\Exception $e) {
-			$e->getMessage();
+	public function telegram($request, $response, $args)
+	{
+		Spay_tool::logResult(file_get_contents("php://input"));
+		$token = "";
+		if(isset($request->getQueryParams()["token"]))
+		{
+			$token = $request->getQueryParams()["token"];
 		}
-    }
+		
+		if($token == Config::get('telegram_request_token'))
+		{
+			TelegramProcess::process();
+		}
+		else
+		{
+			echo("不正确请求！");
+		}
+	}
 	
 	public function page404($request, $response, $args)
     {
@@ -130,6 +136,7 @@ class HomeController extends BaseController
         return $newResponse;
     }
 	
+<<<<<<< HEAD
 	public function pmw_pingback($request, $response, $args)
     {
 		
@@ -306,4 +313,10 @@ class HomeController extends BaseController
 			exit('Fail');
 		}
     }
+=======
+	public function pay_callback($request, $response, $args)
+	{
+		Pay::callback($request);
+	}
+>>>>>>> 1690c1b76d3261fcb1b1f77b7d2035f11c35ff18
 }

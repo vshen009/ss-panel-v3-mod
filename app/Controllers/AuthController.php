@@ -21,6 +21,7 @@ use App\Utils\Duoshuo;
 use App\Utils\GA;
 use App\Utils\Wecenter;
 use App\Utils\Geetest;
+use App\Utils\TelegramSessionManager;
 
 
 
@@ -42,7 +43,21 @@ class AuthController extends BaseController
 		{
 			$GtSdk = null;
 		}
-        return $this->view()->assign('geetest_html',$GtSdk)->display('auth/login.tpl');
+		
+		if(Config::get('enable_telegram') == 'true')
+		{
+			$login_text = TelegramSessionManager::add_login_session();
+			$login = explode("|", $login_text);
+			$login_token = $login[0];
+			$login_number = $login[1];
+		}
+		else
+		{
+			$login_token = '';
+			$login_number = '';
+		}
+		
+        return $this->view()->assign('geetest_html',$GtSdk)->assign('login_token', $login_token)->assign('login_number', $login_number)->assign('telegram_bot', Config::get('telegram_bot'))->display('auth/login.tpl');
     }
 
     public function loginHandle($request, $response, $args)
@@ -121,6 +136,39 @@ class AuthController extends BaseController
 		
         return $response->getBody()->write(json_encode($rs));
     }
+	
+	public function qrcode_loginHandle($request, $response, $args)
+	{
+		// $data = $request->post('sdf');
+		$token =  $request->getParam('token');
+		$number =  $request->getParam('number');
+		
+		$ret = TelegramSessionManager::step2_verify_login_session($token, $number);
+		if (!$ret) {
+			$res['ret'] = 0;
+			$res['msg'] = "此令牌无法被使用。";
+			return $response->getBody()->write(json_encode($res));
+		}
+		
+		
+		// Handle Login
+		$user = User::where('id','=',$ret)->first();
+		// @todo
+		$time =  3600*24;
+		
+		Auth::login($user->id,$time);
+		$rs['ret'] = 1;
+		$rs['msg'] = "欢迎回来";
+		
+		$loginip=new LoginIp();
+		$loginip->ip=$_SERVER["REMOTE_ADDR"];
+		$loginip->userid=$user->id;
+		$loginip->datetime=time();
+		$loginip->type=0;
+		$loginip->save();
+		
+		return $response->getBody()->write(json_encode($rs));
+	}
 
     public function register($request, $response, $next)
     {
@@ -389,6 +437,24 @@ class AuthController extends BaseController
         Auth::logout();
         $newResponse = $response->withStatus(302)->withHeader('Location', '/auth/login');
         return $newResponse;
+    }
+	
+	public function qrcode_check($request, $response, $args)
+    {
+		$token = $request->getQueryParams()["token"];
+		$number = $request->getQueryParams()["number"];
+		
+		if(Config::get('enable_telegram') == 'true')
+		{
+			$ret = TelegramSessionManager::check_login_session($token, $number);
+			$res['ret'] = $ret;
+			return $response->getBody()->write(json_encode($res));
+		}
+		else
+		{
+			$res['ret'] = 0;
+			return $response->getBody()->write(json_encode($res));
+		}
     }
 
 }

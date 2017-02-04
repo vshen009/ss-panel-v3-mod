@@ -10,12 +10,12 @@ namespace App\Command;
 use App\Models\User;
 use App\Utils\Hash,App\Utils\Tools,App\Services\Config;
 
-use App\Utils\GA;
+use App\Utils\GA,App\Utils\QRcode;
 
 class XCat
 {
 
-    	public $argv;
+	public $argv;
 
 	public function __construct($argv)
 	{
@@ -26,35 +26,35 @@ class XCat
 	{
 		switch($this->argv[1]){
 			case("install"):
-		        	return $this->install();
-		    	case("createAdmin"):
-		        	return $this->createAdmin();
-		    	case("resetTraffic"):
-		        	return $this->resetTraffic();
+					return $this->install();
+				case("createAdmin"):
+					return $this->createAdmin();
+				case("resetTraffic"):
+					return $this->resetTraffic();
 			case("setTelegram"):
-		        	return $this->setTelegram();
+					return $this->setTelegram();
 			case("initQQWry"):
-		        	return $this->initQQWry();
-		    	case("sendDiaryMail"):
-		        	return DailyMail::sendDailyMail();
+					return $this->initQQWry();
+				case("sendDiaryMail"):
+					return DailyMail::sendDailyMail();
 			case("reall"):
-		        	return DailyMail::reall();
+					return DailyMail::reall();
 			case("syncusers"):
-		        	return SyncRadius::syncusers();
+					return SyncRadius::syncusers();
 			case("synclogin"):
-		        	return SyncRadius::synclogin();
+					return SyncRadius::synclogin();
 			case("syncvpn"):
 				return SyncRadius::syncvpn();
 			case("nousers"):
-		        	return ExtMail::sendNoMail();
+					return ExtMail::sendNoMail();
 			case("oldusers"):
-		        	return ExtMail::sendOldMail();
+					return ExtMail::sendOldMail();
 			case("syncnode"):
-		        	return Job::syncnode();
+					return Job::syncnode();
 			case("syncnasnode"):
-		        	return Job::syncnasnode();
+					return Job::syncnasnode();
 			case("syncnas"):
-		        	return SyncRadius::syncnas();
+					return SyncRadius::syncnas();
 			case("dailyjob"):
 				return Job::DailyJob();
 			case("checkjob"):
@@ -69,8 +69,8 @@ class XCat
 				return $this->initdownload();
 			case("updatedownload"):
 				return Job::updatedownload();
-		    	default:
-		        	return $this->defaultAction();
+			default:
+				return $this->defaultAction();
 		}
 	}
 
@@ -172,7 +172,10 @@ class XCat
 	public function setTelegram()
 	{
 		$bot = new \TelegramBot\Api\BotApi(Config::get('telegram_token'));
-		echo $bot->setWebhook(Config::get('baseUrl')."/telegram_callback");
+		if($bot->setWebhook(Config::get('baseUrl')."/telegram_callback?token=".Config::get('telegram_request_token')) == 1)
+		{
+			echo("设置成功！");
+		}
 	}
 	
 	public function initQQWry()
