@@ -1,134 +1,401 @@
-{include file='header.tpl'}
-<div class="jumbotron masthead">
-<div class="container">
+﻿
+
+
+
+
+
+{include file='user/main.tpl'}
+
+
+
+
+
+
+
+	<main class="content">
+		<div class="content-header ui-content-header">
+			<div class="container">
+				<h1 class="content-heading">用户中心</h1>
+			</div>
+		</div>
+		<div class="container">
+			<section class="content-inner margin-top-no">
+				<div class="ui-card-wrap">
+						<div class="col-lg-6 col-md-6">
+								<div class="card">
+								<div class="card-main">
+									<div class="card-inner margin-bottom-no">
+						  				<p class="card-heading">快捷功能</p>
+											<p> <a href="user/code"> 立即充值 </a></p>
+											<p> <a href="user/relay"> 修改中转 </a></p>
+											<p> <a href="user/shop"> 购买套餐 </a></p>
+										</dl>
+									</div>
+									
+								</div>
+							</div>
+							<div class="card">
+								<div class="card-main">
+									<div class="card-inner margin-bottom-no">
+										<p class="card-heading">=系统中最新公告=</p>
+										<p>其他公告请到<a href="/user/announcement"/>公告面板</a>查看。</p>
+										{if $ann != null}
+										<p>{$ann->content}</p>
+										{/if}
+									</div>
+									
+								</div>
+							</div>
+							<div class="card">
+								<div class="card-main">
+									<div class="card-inner margin-bottom-no">
+										<p class="card-heading">用户信息</p>
+										<dl class="dl-horizontal">
+											<dt>帐号等级</dt>
+											<dd>{$user->class}</dd>
+
+											<dt>等级过期时间</dt>
+											<dd>{$user->class_expire}</dd>
+
+											<dt>帐号过期时间</dt>
+											<dd>{$user->expire_in}</dd>
+											
+											<dt>速度限制</dt>
+											{if $user->node_speedlimit!=0}
+											<dd>{$user->node_speedlimit}Mbps</dd>
+											{else}
+											<dd>不限速</dd>
+										{/if}
+									</div>
+									
+								</div>
+							</div>
+							<div class="card">
+								<div class="card-main">
+									<div class="card-inner margin-bottom-no">
+										<p class="card-heading">All-in-One 客户端配置帮助文档</p>
+										<p>这里为您提供了自动化地配置文件生成，包含了所有 Shadowsocks 服务器的信息，方便您在诸多的服务器中快速添加，快速切换。</p>
+										
+										<p><i class="icon icon-lg">desktop_windows</i>&nbsp;<a href="/ssr-download/ssr-win.7z">Windows 下载 C# 版</a>，解压，运行程序，然后您有两种方式导入所有节点<br>(1)下载<a href="/user/getpcconf">配置文件</a>，下载的文件放到程序文件覆盖gui-config.jason<br>(或)点击<a class="copy-text" data-clipboard-text="{$android_add}">这里</a>，然后右键小飞机 -- 从剪贴板复制地址.<br>(2)右键小飞机，服务器选项里面->然后选择一个合适的服务器（重要一定要选择服务器，推荐美国高速）.<br>
+										(3)更新一下PAC为绕过国内常用域名IP. <br>
+										(4)然后开启系统代理-PAC模式即可尽情上网.<BR>
+										更详细选项说明请点<a href="/helpdoc/windows.pdf" target="_new">Windows配置帮助</a><br> </p>
+										
+										<br>
+										<p><i class="icon icon-lg">laptop_mac</i>&nbsp;<a href="/ssr-download/ssr-mac.dmg">Mac OS X下载这个</a>，安装.<br>
+										(1)然后下载<a href="/user/getpcconf">配置文件</a>，运行程序，小飞机上右键 服务器列表 子菜单 的 “导入服务器配置文件...” 导入这个文件 <br>
+										(2)后面步骤和windows 配置 2，3，4 一样.
+										</p>
+										
+										<p><i class="icon icon-lg">laptop_mac</i>&nbsp;iOS 强烈推荐下载<a href="https://itunes.apple.com/cn/app/shadowrocket/id932747118?mt=8">Shadowrocket</a>，然后在 Safari 中点击<a id="android_add" href="{$android_add}">这个</a>，然后点击确定，就可以批量添加节点。</p>			
+										
+										<p><i class="icon icon-lg">laptop_mac</i>&nbsp;iOS 备选下载（免费）<a href="https://appsto.re/cn/pD8pgb.i">wingy</a>，然后手机上去点<a id="android_add" href="{$ss_add}">wingy专用</a>
+										
+										
+										
+										<p><i class="icon icon-lg">android</i>&nbsp;<a href="/ssr-download/ssr-android.apk">Android下载 Android 版</a>，安装，然后在手机上默认浏览器中点击
+										然后点击确定，批量添加完节点，然后路由选择绕过大陆，右上角开启就可以上网了。</p>
+										
+										
+								=====================以下是单端口配置测试======================
+										<p><i class="icon icon-lg">desktop_windows</i>&nbsp;<a href="/ssr-download/ssr-win.7z">Windows 下载 C# 版</a>，解压，运行程序，然后您有两种方式导入所有节点<br>(1)下载<a href="/user/getpcconf?without_mu=0">这个</a>或者<a  href="/user/getpcconf?without_mu=1">这个（无单端口多用户）</a>，右键小飞机 服务器 -- 从配置文件导入服务器，选择这个文件，<br>(2)点击<a class="copy-text" data-clipboard-text="{$android_add}">这里</a>或者<a class="copy-text" data-clipboard-text="{$android_add_without_mu}">这个（无单端口多用户）</a>，然后右键小飞机 -- 从剪贴板复制地址<br>然后选择一个合适的服务器，更新一下PAC为绕过国内IP，然后开启系统代理即可上网。</p>
+										<p><i class="icon icon-lg">laptop_mac</i>&nbsp;<a href="/ssr-download/ssr-mac.dmg">Mac OS X下载这个</a>，安装，然后下载<a href="/user/getpcconf?without_mu=0">这个</a>或者<a  href="/user/getpcconf?without_mu=1">这个（无单端口多用户）</a>，运行程序，小飞机上右键 服务器列表 子菜单 的 “导入服务器配置文件...” 导入这个文件，然后选择一个合适的服务器，更新一下PAC，然后开启系统代理即可上网。</p>
+										<p><i class="icon icon-lg">laptop_mac</i>&nbsp;iOS 强烈推荐下载<a href="https://itunes.apple.com/cn/app/shadowrocket/id932747118?mt=8">Shadowrocket</a>，然后在 Safari 中点击<a id="android_add" href="{$android_add}">这个</a>或者<a id="android_add_without_mu" href="{$android_add_without_mu}">这个（无单端口多用户）</a>，然后点击确定，就可以批量添加节点。</p>
+										<p><i class="icon icon-lg">laptop_mac</i>&nbsp;iOS 下载<a href="/link/{$ios_token}">这个</a>，导入到 Surge 中，然后就可以随意切换服务器上网了。</p>
+										<p><i class="icon icon-lg">android</i>&nbsp;<a href="/ssr-download/ssr-android.apk">Android下载 Android 版</a>，安装，然后在手机上默认浏览器中点击<a id="android_add" href="{$android_add}">这个</a>或者<a id="android_add_without_mu" href="{$android_add_without_mu}">这个（无单端口多用户）</a>，然后点击确定，批量添加完节点，然后路由选择绕过大陆，右上角开启就可以上网了。同时提供一个 ACL 地址，<a href="/link/{$acl_token}">长按复制地址</a>到客户端里应用即可。</p>
+									</div>
+										
+									</div>
+									
+								</div>
+							</div>
+						
+
+							
+							
+						</div>
+						
+						<div class="col-lg-6 col-md-6">
+							
+						
+						
+							<div class="card">
+								<div class="card-main">
+									<div class="card-inner margin-bottom-no">
+									
+										<div id="traffic_chart" style="height: 300px; width: 100%;"></div>
+										
+										<script src="//cdn.bootcss.com/canvasjs/1.7.0/canvasjs.js"></script>
+										<script type="text/javascript">
+											var chart = new CanvasJS.Chart("traffic_chart",
+											{
+												title:{
+													text: "流量使用情况",
+													fontFamily: "Impact",
+													fontWeight: "normal"
+												},
+												legend:{
+													verticalAlign: "bottom",
+													horizontalAlign: "center"
+												},
+												data: [
+												{
+													//startAngle: 45,
+													indexLabelFontSize: 20,
+													indexLabelFontFamily: "Garamond",
+													indexLabelFontColor: "darkgrey",
+													indexLabelLineColor: "darkgrey",
+													indexLabelPlacement: "outside",
+													type: "doughnut",
+													showInLegend: true,
+													dataPoints: [
+														{if $user->transfer_enable != 0}
+														{
+															y: {$user->last_day_t/$user->transfer_enable*100}, legendText:"已用 {number_format($user->last_day_t/$user->transfer_enable*100,2)}% {$user->LastusedTraffic()}", indexLabel: "已用 {number_format($user->last_day_t/$user->transfer_enable*100,2)}% {$user->LastusedTraffic()}"
+														},
+														{
+															y: {($user->u+$user->d-$user->last_day_t)/$user->transfer_enable*100}, legendText:"今日 {number_format(($user->u+$user->d-$user->last_day_t)/$user->transfer_enable*100,2)}% {$user->TodayusedTraffic()}", indexLabel: "今日 {number_format(($user->u+$user->d-$user->last_day_t)/$user->transfer_enable*100,2)}% {$user->TodayusedTraffic()}"
+														},
+														{
+															y: {($user->transfer_enable-($user->u+$user->d))/$user->transfer_enable*100}, legendText:"剩余 {number_format(($user->transfer_enable-($user->u+$user->d))/$user->transfer_enable*100,2)}% {$user->unusedTraffic()}", indexLabel: "剩余 {number_format(($user->transfer_enable-($user->u+$user->d))/$user->transfer_enable*100,2)}% {$user->unusedTraffic()}"
+														}
+														{/if}
+													]
+												}
+												]
+											});
+											chart.render();
+										</script>
+										
+									</div>
+									
+								</div>
+							</div>
+						
+						
+					
+							<div class="card">
+								<div class="card-main">
+									<div class="card-inner margin-bottom-no">
+										<p class="card-heading">签到获取流量</p>
+											<p>流量不会重置，可以通过签到获取流量。</p>
+
+											<p>每次签到可以获取{$config['checkinMin']}~{$config['checkinMax']}MB流量。</p>
+										
+											<p>每天可以签到一次。您可以点击按钮或者摇动手机来签到。</p>
+
+											<p>上次签到时间：<code>{$user->lastCheckInTime()}</code></p>
+											
+											<p id="checkin-msg"></p>
+											
+											{if $geetest_html != null}
+												<div id="popup-captcha"></div>
+											{/if}
+									</div>
+									
+									<div class="card-action">
+										<div class="card-action-btn pull-left">
+											{if $user->isAbleToCheckin() }
+												<p id="checkin-btn">
+													<button id="checkin" class="btn btn-brand btn-flat waves-attach"><span class="icon">check</span>&nbsp;签到</button>
+												</p>
+											{else}
+												<p><a class="btn btn-brand disabled btn-flat waves-attach" href="#"><span class="icon">check</span>&nbsp;已经签到过</a></p>
+											{/if}
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						
+							<div class="card">
+								<div class="card-main">
+									<div class="card-inner margin-bottom-no">
+										<p class="card-heading">连接信息</p>
+											<dl class="dl-horizontal">
+												<dt>端口</dt>
+												<dd>{$user->port}</dd>
+												<dt>密码</dt>
+												<dd>{$user->passwd}</dd>
+												<!--
+												<dt>加密方式</dt>
+												<dd>{$user->method}</dd>
+												-->
+												<dt>上次使用</dt>
+												<dd>{$user->lastSsTime()}</dd>
+											</dl>
+									</div>
+									
+								</div>
+							</div>
+						
+						
+						
+						
+						{if $enable_duoshuo=='true'}
+						
+							<div class="card">
+								<div class="card-main">
+									<div class="card-inner margin-bottom-no">
+										<p class="card-heading">讨论区</p>
+											<div class="ds-thread" data-thread-key="0" data-title="index" data-url="{$baseUrl}/user/"></div>
+											<script type="text/javascript">
+											var duoshuoQuery = {
+											short_name:"{$duoshuo_shortname}"
+											};
+												(function() {
+													var ds = document.createElement('script');
+													ds.type = 'text/javascript';ds.async = true;
+													ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+													ds.charset = 'UTF-8';
+													(document.getElementsByTagName('head')[0] 
+													 || document.getElementsByTagName('body')[0]).appendChild(ds);
+												})();
+											</script>
+									</div>
+									
+								</div>
+							</div>
+						
+						{/if}
+						
+						{include file='dialog.tpl'}
+						
+					</div>
+						
+					
+				</div>
+			</section>
+		</div>
+	</main>
+
+
+
+
+
+
+
+{include file='user/footer.tpl'}
+
+<script src="theme/material/js/shake.js/shake.js"></script>
+
+
+<script>
+$(function(){
+	new Clipboard('.copy-text');
+});
+$(".copy-text").click(function () {
+	$("#result").modal();
+	$("#msg").html("已复制到您的剪贴板，请您继续接下来的操作。");
+});
+{if $geetest_html == null}
+window.onload = function() { 
+    var myShakeEvent = new Shake({ 
+        threshold: 15 
+    }); 
  
-{if $user->isLogin}
-				<div class="flexslider">
-				<ul class="slides">
-				<li>
-				<h1 class="wow zoomIn" style="animation-delay:30ms;">欢迎回来：{$user->user_name}</h1>
-				
-				<h3 class="wow zoomIn" style="animation-delay:1320ms;">祝你一天好心情！</h3>
-				
-				<div class="slider-actions "> <a href="/auth/register" class="btn btn-success btn-lg wow bounceIn" style="animation-delay:2000ms;">用户中心 </a> </div>
-				</li>
-				</div>
-		{else}
-				
-				<div class="flexslider">
-				<ul class="slides">
-				<li>
-				<div class="hero-unit">
-				<h1 class="wow zoomIn" style="animation-delay:0ms;">全平台客户端 加速海外网络</h1>
-				<h3 class="wow zoomIn" style="animation-delay:10ms;">上google查资料查文献网站打不开？学android开发安装android网站连接超时？学golang网站竟然打不开？苦恼的NPM安装竟然无法访问官方源？去youtube搜索教程视频无法访问?无法使用facebook,twitter看好友主页和最新新闻?智贸通服务适用于高速访问海外网站，支持Windows/Mac OS/iOS/Android/Linux等平台<br/>一次购买,支持所有设备使用,新用户注册只需1元即可试用7天！</br>有为青年最科学上网方式！</h3>
-				<div class="slider-actions text-center"> <a href="/auth/register" class="btn btn-success btn-lg wow bounceIn" style="animation-delay:800ms;">免费注册 </a> <a href="/pricing" class="btn btn-primary btn-lg wow bounceIn" style="animation-delay:800ms;">立刻购买 </a>
-				</div>
-				</li>
-				<li>
-				<div class="slide2">
-				<p><img src="/theme/bluelove/images/server1.png" alt="server" class="img-responsive center-block wow bounceIn" style="animation-delay:20ms;"></p>
-				<h1 class="wow zoomIn" style="animation-delay:20ms;">全球数十个节点<br/>7个国家和地区线路陆续开通中</h1>
-				<div class="slider-actions text-center"> <a href="/auth/register" class="btn btn-success btn-lg wow bounceIn" style="animation-delay:800ms;">免费注册 </a> <a href="#" class="btn btn-primary btn-lg wow bounceIn" style="animation-delay:800ms;">立刻购买 </a></div>
-				</div>
-				</li>
-				<li>
-				<div class="slide3">
-				<p class="pull-left"><img src="/theme/bluelove/images/server2.png" alt="server" class="img-responsive center-block wow bounceIn" style="animation-delay:30ms;"></p>
-				<h1 class="wow zoomIn" style="animation-delay:30ms;">全自动化管理</h1>
-				<h3 class="wow zoomIn" style="animation-delay:3200ms;">所有服务器均自动脚本值守，保证服务稳定性及可用性<br/>每隔10秒检测连接情况，在线率达到99%以上</h3>
-				<div class="slider-actions text-center"> <a href="/auth/register" class="btn btn-success btn-lg wow bounceIn" style="animation-delay:800ms;">免费注册 </a> <a href="#" class="btn btn-primary btn-lg wow bounceIn" style="animation-delay:800ms;">立刻购买 </a> </div>
-				</div>
-				</li>
-				</ul>
-				</div>
-				</div>
-				</div>
+    myShakeEvent.start(); 
  
-				<div class="container">
-				 
-				<div class="row mainFeatures" id="features">
-				<div class="col-sm-6 col-md-4 wow fadeIn" style="animation-delay:0ms;">
-				<div class="img-thumbnail"> <img src="/theme/bluelove/images/secure_img.png" width="85" height="88" alt="secure" class="wow bounceIn" style="animation-delay:100ms;">
-				<div class="caption">
-				<h4>安全高效</h4>
-				<p>全站会员支持多种加密方式如aes-256-cfb,chacha20等，兼容SS协议，<br/>安全同时也提升网络的整体访问速度</p>
-				</div>
-				</div>
-				</div>
-				<div class="col-sm-6 col-md-4 wow fadeIn" style="animation-delay:200ms;">
-				<div class="img-thumbnail"> <img src="/theme/bluelove/images/fast_img.png" width="85" height="88" alt="secure" class="wow bounceIn" style="animation-delay:300ms;">
-				<div class="caption">
-				<h4>全球加速</h4>
-				<p>全球多个国家多个节点陆续上线,美国日本新加坡香港国内中转，<br/>全局模式、PAC模式、负载均衡,最大程度保障访问速度及稳定性</p>
-				</div>
-				</div>
-				</div>
-				<div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-0 wow fadeIn" style="animation-delay:400ms;">
-				<div class="img-thumbnail"> <img src="/theme/bluelove/images/support_img.png" width="85" height="88" alt="secure" class="wow bounceIn" style="animation-delay:500ms;">
-				<div class="caption">
-				<h4>客服支持</h4>
-				<p>7*8系统工单支持，工作时间快速回复<br/>解决使用过程中各种问题</p>
-				</div>
-				</div>
-				</div>
-				</div>
-				<hr style="margin:60px 0;">
-				 
-				<div class="row PageHead">
-				<div class="col-md-12">
-				<h1>全新 智贸通</h1>
-				<h3>购买使用更简单 个人用户中心简单易用</h3>
-				</div>
-				</div>
-				<div class="row">
-				<div class="col-sm-6 features wow fadeInUp" style="animation-delay:100ms;"> <i class="glyphicon glyphicon-dashboard"></i>
-				<h4>账号自动开通</h4>
-				<p>支持支付宝转账付款及卡密付款，自动付款，自动开通，安全便捷<br/>优质线路，稳定快速安全</p>
-				</div>
-				<div class="col-sm-6 features wow fadeInUp" style="animation-delay:200ms;"> <i class="glyphicon glyphicon-tasks"></i>
-				<h4>各套餐灵活配置</h4>
-				<p>根据个人需求选择对应套餐,全部为高端机房机器及线路<br/>满足您的专业需求</p>
-				</div>
-				</div>
-				<div class="row" style="margin-bottom:60px;">
-				<div class="col-sm-6 features wow fadeInUp" style="animation-delay:300ms;"> <i class="glyphicon glyphicon-user"></i>
-				<h4>完善售后体系</h4>
-				<p>7*8 售前/后工单服务<br/>账号、节点、套餐升级等服务均可通过工单解决</p>
-				</div>
-				<div class="col-sm-6 features wow fadeInUp" style="animation-delay:400ms;"> <i class="glyphicon glyphicon-globe"></i>
-				<h4>节点动态调整</h4>
-				<p>对电信、联通、移动等各运营商用户进行动态节点调整<br/>保证各网络环境下连接速度</p>
-				</div>
-				</div>
-				</div>
-				 
-				 
-				<div class="row page-section section-dark section-center" style="margin-left:0px!important;margin-right:0px!important; overflow: hidden;">
-				<div class="container">
-				<h2 class="section-title">智贸通全球服务节点 陆续增加中</h2>
-				<div class="location-map location-map-lg">
-				<div class="location-container">
-				<div class="location location-tokyo animate zoomIn" style="visibility: visible; animation-name: zoomIn;"><span class="location-name"><span>东京</span></span><span class="location-pin"></span></div>
-				<div class="location location-seoul animate zoomIn" style="visibility: visible; animation-name: zoomIn;"><span class="location-name"><span>首尔</span></span><span class="location-pin"></span></div>
-				<div class="location location-hongkong animate zoomIn" style="visibility: visible; animation-name: zoomIn;"><span class="location-name"><span>香港</span></span><span class="location-pin"></span></div>
-				<div class="location location-singapore animate zoomIn" style="visibility: visible; animation-name: zoomIn;"><span class="location-name"><span>新加坡</span></span><span class="location-pin"></span></div>
-				<div class="location location-los-angeles animate zoomIn" style="visibility: visible; animation-name: zoomIn;"><span class="location-name"><span>洛杉矶</span></span><span class="location-pin"></span></div>
-				<div class="location location-novosibirsk animate zoomIn" style="visibility: visible; animation-name: zoomIn;"><span class="location-name"><span>新西伯利亚</span></span><span class="location-pin"></span></div>
-				 
-				 
-				<div class="location location-beijing animate zoomIn" style="visibility: visible; animation-name: zoomIn;"><span class="location-name"><span>北京中转</span></span><span class="location-pin"></span></div>
-				<div class="map"></div>
-				</div>
-				</div>
-				</div>
-				</div>
-				  </div>
-				 
-				 
+    window.addEventListener('shake', shakeEventDidOccur, false); 
+ 
+    function shakeEventDidOccur () { 
+		if("vibrate" in navigator){
+			navigator.vibrate(500);
+		}
+		
+        $.ajax({
+                type: "POST",
+                url: "/user/checkin",
+                dataType: "json",
+                success: function (data) {
+                    $("#checkin-msg").html(data.msg);
+                    $("#checkin-btn").hide();
+					$("#result").modal();
+                    $("#msg").html(data.msg);
+                },
+                error: function (jqXHR) {
+					$("#result").modal();
+                    $("#msg").html("发生错误：" + jqXHR.status);
+                }
+            });
+    } 
+}; 
+$(document).ready(function () {
+	$("#checkin").click(function () {
+		$.ajax({
+			type: "POST",
+			url: "/user/checkin",
+			dataType: "json",
+			success: function (data) {
+				$("#checkin-msg").html(data.msg);
+				$("#checkin-btn").hide();
+				$("#result").modal();
+				$("#msg").html(data.msg);
+			},
+			error: function (jqXHR) {
+				$("#result").modal();
+				$("#msg").html("发生错误：" + jqXHR.status);
+			}
+		})
+	})
+})
+	
+{else}
+window.onload = function() { 
+    var myShakeEvent = new Shake({ 
+        threshold: 15 
+    }); 
+ 
+    myShakeEvent.start(); 
+ 
+    window.addEventListener('shake', shakeEventDidOccur, false); 
+ 
+    function shakeEventDidOccur () { 
+		if("vibrate" in navigator){
+			navigator.vibrate(500);
+		}
+		
+        c.show();
+    } 
+}; 
+var handlerPopup = function (captchaObj) {
+	c = captchaObj;
+	captchaObj.onSuccess(function () {
+		var validate = captchaObj.getValidate();
+		$.ajax({
+			url: "/user/checkin", // 进行二次验证
+			type: "post",
+			dataType: "json",
+			data: {
+				// 二次验证所需的三个值
+				geetest_challenge: validate.geetest_challenge,
+				geetest_validate: validate.geetest_validate,
+				geetest_seccode: validate.geetest_seccode
+			},
+			success: function (data) {
+				$("#checkin-msg").html(data.msg);
+				$("#checkin-btn").hide();
+				$("#result").modal();
+				$("#msg").html(data.msg);
+			},
+			error: function (jqXHR) {
+				$("#result").modal();
+				$("#msg").html("发生错误：" + jqXHR.status);
+			}
+		});
+	});
+	// 弹出式需要绑定触发验证码弹出按钮
+	captchaObj.bindOn("#checkin");
+	// 将验证码加到id为captcha的元素里
+	captchaObj.appendTo("#popup-captcha");
+	// 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
+};
+initGeetest({
+	gt: "{$geetest_html->gt}",
+	challenge: "{$geetest_html->challenge}",
+	product: "popup", // 产品形式，包括：float，embed，popup。注意只对PC版验证码有效
+	offline: {if $geetest_html->success}0{else}1{/if} // 表示用户后台检测极验服务器是否宕机，与SDK配合，用户一般不需要关注
+}, handlerPopup);
+	
 {/if}
-
-
-
-
-
-{include file='footer.tpl'}
+</script>
